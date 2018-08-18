@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head th:include="/layouts/fragments/scripts :: head" />
+
+<body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+		
+		<div class='preloader'><div class='loaded'>&nbsp;</div></div>
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#"><img src="../img/logo.png" alt="" /></a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="active"><a href="#home">Home</a></li>
+                        <li><a href="#novoPonto">Novo Ponto</a></li>
+                        <li><a href="#gallery">Gallery</a></li>
+                        <li><a href="#video">Video</a></li>
+                        <li><a href="#price">Prices</a></li>
+                        <li><a href="#testimonial">Testimonials</a></li>
+                        <li><a href="#download">Download</a></li>
+                        <li><a href="#contact">Contact</a></li>
+
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+
+        <!--Home page style-->
+        <header id="home" class="home">
+
+            <div class="container">
+
+                <div class="row">
+
+                    <div class="col-md-6 col-md-offset-6 col-sm-12 col-xs-12">
+                        <div class="home-content sections">
+
+                            <h1>Simple, Beautiful <span>and Amazing</span></h1>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eget nunc vitae tellus luctus ullamcorper. Nam porttitor ullamcorper felis at convallis. Aenean ornare vestibulum nisi fringilla lacinia. Nullam pulvinar sollicitudin velit id laoreet. Quisque non rhoncus sem.</p>
+
+                            <a target="_blank" href="#"><button class="btn btn-default btn-lg">Download</button></a>
+                            <a target="_blank" href="#"><button class="btn btn-primary btn-lg">Learn More</button></a>
+
+                            <div class="available">
+                                <p>
+                                    Available on :
+                                    <a href="#"><i class="fa fa-apple"></i></a>
+                                    <a href="#"><i class="fa fa-android"></i></a>
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </header>
+
+        <!-- Sections -->
+        <section id="gallery" class="sections">
+            <div class="container text-center">
+
+                <div class="heading-content">
+                    <h3>Pontos Cadastrados</h3>
+                    <h5>Lugares conhecidos</h5>
+                </div>
+
+                <!-- Example row of columns -->
+                <div class="row">
+
+            <div class="box-body">
+			<table id="table-list-tasks" class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th class="col-sm-3">Nome</th>
+						<th class="col-sm-5">Endereço</th>
+						<th class="col-sm-1">Latitude</th>
+						<th class="col-sm-1">Longitude</th>
+						<th class="col-sm-1">Id</th>
+						<th class="col-sm-1">Operações</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="pnto: ${pontos}">
+						<td th:text="${pnto.nome}"></td>
+						<td th:text="${pnto.endereco}"></td>
+						<td th:text="${pnto.latitude}"></td>
+						<td th:text="${pnto.longitude}"></td>
+						<td th:text="${pnto.id}"></td>
+						<td>		
+						 <form action="#" th:action="@{/ponto/delete/} + ${{pnto.id}}" method="get">
+                			<button th:id="'table_entry_childs_button_' + ${pnto.id}" class="btn btn-danger" type="submit">Delete</button>
+            			</form>
+            			<form action="#" th:action="@{/ponto/edit/} + ${{pnto.id}}" method="get">
+                			<button th:id="'table_entry_childs_button_' + ${pnto.id}" class="btn btn-warning" type="submit">Edit</button>
+            			</form>
+						</td>
+					</tr>								
+				</tbody>
+				<tfoot></tfoot>
+			</table>							
+		</div>
+
+
+
+                </div>
+            </div> 
+        </section>
+     
+        <section id="novoPonto"  class="sections lightbg">
+            <div class="container text-center" id="novoPonto">
+            
+			     <form method="post" action="#" th:action="@{/ponto/add}" th:object="${ponto}" id="formGravaPonto">
+			     		<input type="hidden" id="id" th:field="*{id}">
+			     		<label>Nome:</label> <input type="text" class="form-control" id="txtNome" th:field="*{nome}"  />
+			     		<label>CEP:</label> <input type="text" class="form-control" id="txtCEP"  />
+			     		<label>Endereço:</label> <input type="text" class="form-control" id="txtEndereco" th:field="*{endereco}" size=100  />  
+			     		  
+			     		 
+			            <input type="button" id="btnEndereco" name="btnEndereco" value="Mostrar no mapa" />
+			            <br />
+				        <div id="mapa" style="height: 500px; width: 100%; float:left;">
+				        </div>
+				 		
+				        <div>
+				            <input type="submit" value="Enviar" name="btnEnviar" />
+				        </div>
+				 
+				        <input type="hidden" id="txtLatitude" name="txtLatitude" th:field="*{latitude}" />
+				        <input type="hidden" id="txtLongitude" name="txtLongitude" th:field="*{longitude}" />
+				</form>
+            </div> <!-- /container -->       
+        </section>
+
+        
+
+        <!-- Sections -->
+        <section id="video" class="video">
+            <div class="overlay sections">
+                <div class="container text-center">
+                    <!-- Example row of columns -->
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12">
+                            <div class="video-content">
+
+                                <a href="http://www.youtube.com/embed/ee1_2gA8UZY?autoplay=1&amp;.)wmode=opaque&amp;.)fs=1" class="youtube-media"><i class="fa fa-play"></i></a>
+                                <h1>Watch the best Technology in <span>Action</span></h1>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eget nunc vitae tellus luctus ullamcorper. Nam porttitor ullamcorper felis at convallis. Aenean ornare vestibulum nisi fringilla lacinia. Nullam pulvinar sollicitudin velit id laoreet. Quisque non rhoncus sem.</p>
+
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- /container -->
+            </div>		
+        </section>
+        
+
+        <div class="scroll-top">
+
+            <div class="scrollup">
+                <i class="fa fa-angle-double-up"></i>
+            </div>
+
+        </div>
+
+
+        <!--Footer-->
+        <footer id="footer" class="footer colorsbg">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="copyright text-left">
+                            <p>Made with <i class="fa fa-heart"></i> by <a href="http://bootstrapthemes.co"> Bootstrap Themes </a>2016. All rights reserved.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="copyright text-right">
+                            <p>Terms of Service | Privacy Policy</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </footer>
+
+    </body>
+</html>

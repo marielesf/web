@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head th:include="/layouts/fragments/scripts :: head" />
+
+<body>
+	<div class='preloader'>
+		<div class='loaded'>&nbsp;</div>
+	</div>
+	<nav class="navbar navbar-default navbar-fixed-top">
+		<div class="container">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+					aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#"><img src="../img/logoIF.png"
+					alt="" height="220%" width="70%" /></a>
+			</div>
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse"
+				id="bs-example-navbar-collapse-1">
+
+				<ul class="nav navbar-nav navbar-right">
+					<li class="active"><a href="#home">Home</a></li>
+					<li><a href="#list">Listar Pontos</a></li>
+					<li><a href="#novoPonto">Novo Ponto</a></li>
+					<li><a href="#video">Video</a></li>
+					<li><a href="#contact">Contact</a></li>
+
+				</ul>
+			</div>
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container-fluid -->
+	</nav>
+
+	<!--Home page style-->
+	<header id="home" class="home">
+
+		<div class="container">
+
+			<div class="row">
+
+				<div class="col-md-6 col-md-offset-6 col-sm-12 col-xs-12">
+					<div class="home-content sections">
+
+						<h1>
+							<span>IFCaronaSolidária</span>
+						</h1>
+						<h1>Simple, Beautiful and Amazing</h1>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+							Nunc eget nunc vitae tellus luctus ullamcorper. Nam porttitor
+							ullamcorper felis at convallis. Aenean ornare vestibulum nisi
+							fringilla lacinia. Nullam pulvinar sollicitudin velit id laoreet.
+							Quisque non rhoncus sem.</p>
+
+						<a target="_blank" href="#"><button
+								class="btn btn-default btn-lg">Download</button></a> <a
+							target="_blank" href="#"><button
+								class="btn btn-primary btn-lg">Learn More</button></a>
+
+						<div class="available">
+							<p>
+								Disponivél em : <a href="#"><i class="fa fa-android"></i></a>
+							</p>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+	</header>
+
+	<!-- Sections -->
+	<section id="list" class="sections">
+		<div class="container text-center">
+
+			<!-- Example row of columns -->
+			<div class="row">
+
+				<div class="box-body">
+
+					<div class="heading-content">
+						<h3>Pontos Cadastrados</h3>
+						<h5>Lugares conhecidos</h5>
+					</div>
+					<table id="table-list-tasks"
+						class="table table-bordered table-striped">
+						<h3>Pontos Cadastrados</h3>
+
+						<thead>
+							<tr>
+								<th class="col-sm-3">Nome</th>
+								<th class="col-sm-5">Endereço</th>
+								<th class="col-sm-1">Latitude</th>
+								<th class="col-sm-1">Longitude</th>
+								<th class="col-sm-1">Operações</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="ponto: ${pontos}">
+								<td th:text="${ponto.nome}"></td>
+								<td th:text="${ponto.endereco}"></td>
+								<td th:text="${ponto.latitude}"></td>
+								<td th:text="${ponto.longitude}"></td>
+								<div>
+									<td>
+										<form action="#" id="pontoDeleteform"
+											th:action="@{/ponto/delete/} + ${{ponto.id}}" method="get">
+											
+											<a href="#novoPonto">
+											<button th:id="'table_entry_childs_button_' + ${ponto.id}"
+												th:onclick="'javascript:edit(\'' + ${ponto.nome} + '\',\'' + ${ponto.id} + '\',\'' + ${ponto.endereco} + '\',\'' + ${ponto.latitude} + '\',\'' + ${ponto.longitude} + '\');'"
+												type="button">
+												<span class="glyphicon">&#xe065;</span>
+											</button>
+											</a>
+									
+											<button th:id="'table_entry_childs_button_' + ${ponto.id}"
+												th:onclick="'javascript:deletePonto(\'' + ${ponto.nome} + '\')'"
+												type="button">
+												<span class="glyphicon">&#xe020;</span>
+											</button>
+										</form></td>
+								</div>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section id="novoPonto" class="sections lightbg">
+
+		<div class="container text-center" id="novoPonto">
+
+			<div class="heading-content">
+				<h3>Novo Ponto</h3>
+			</div>
+			                <span th:if="${resultSave != null}">
+                <script th:inline="javascript">
+					/*<![CDATA[*/
+
+					    var message = /*[[${resultSave}]]*/ 'default';
+    					console.log(message);
+    					swal("Ponto de referencia " + message + " salvo com sucesso!", {
+               		      icon: "success",
+               		    });
+						/*]]>*/
+					</script>
+                </span>
+                <span th:if="${resultSaveFailure != null}">
+                <script th:inline="javascript">
+					/*<![CDATA[*/
+
+					    var message = /*[[${resultSaveFailure}]]*/ 'default';
+    					console.log(message);
+    					swal("Ponto de referencia " + message + " já existe!", {
+               		      icon: "error",
+               		    });
+						/*]]>*/
+					</script>
+                </span>                
+                <span th:if="${resultDelete != null}">
+                <script th:inline="javascript">
+					/*<![CDATA[*/
+
+					    var message = /*[[${resultDelete}]]*/ 'default';
+    					console.log(message);
+    					swal("Ponto de referência " + message + " deletado!", {
+               		      icon: "success",
+               		    });
+						/*]]>*/
+					</script>
+                </span>
+
+			<form method="post" action="#" th:action="@{/ponto/add}" th:object="${ponto}" id="formGravaPonto">
+			     		<input type="hidden" id="id" th:field="*{id}" />
+			     		<label>Nome:</label> <input type="text" class="form-control" name="txtNome" id="txtNome" th:field="*{nome}"  />
+			     		<label id="errorNome"></label><br />
+			     		<label th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></label><br />
+			     		<!-- TODO RNG03 - RNG04 -->
+			     		<label>CEP:</label> <input type="number" class="form-control" name="txtCEP" id="txtCEP" maxlength="8"/>
+			     		<label id="errorCEP"></label><br />			     		  
+			     		<br /> 
+			            <input type="button" id="btnEndereco" name="btnEndereco" value="Mostrar no mapa" class="btn btn-warning" />
+			            <br />
+			            <br />
+			            <br />
+			            <input type="text" class="form-control" readonly="readonly" name="txtEndereco" id="txtEndereco" th:field="*{endereco}" size=100 />
+			            <label id="errorEndereco"></label><br />
+			            <label th:if="${#fields.hasErrors('endereco')}" th:errors="*{endereco}"></label><br />  
+				        <div id="mapa" style="height: 500px; width: 100%; float:left;"></div>
+				 		<br />
+			            
+			           	<br />
+				        <div>
+				        	<a th:href="@{|~/|}" href="#"><button type="button" class="btn btn-danger pull-left">Cancelar</button></a>
+				            <input type="button" value="Salvar" name="btnEnviar" id="btnEnviar" class="btn btn-success pull-right" />
+				        </div>
+				 
+				        <input type="hidden" id="txtLatitude" name="txtLatitude" th:field="*{latitude}" />
+				        <input type="hidden" id="txtLongitude" name="txtLongitude" th:field="*{longitude}" />
+				</form>
+		</div>
+	</section>
+
+
+
+	<!-- Sections -->
+	<section id="video" class="video">
+		<div class="overlay sections">
+			<div class="container text-center">
+				<!-- Example row of columns -->
+				<div class="row">
+					<div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12">
+						<div class="video-content">
+
+							<a href="https://www.youtube.com/watch?v=P4gMlqYwqd0"
+								class="youtube-media"><i class="fa fa-play"></i></a>
+							<h1>
+								Watch the best Technology in <span>Action</span>
+							</h1>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+								Nunc eget nunc vitae tellus luctus ullamcorper. Nam porttitor
+								ullamcorper felis at convallis. Aenean ornare vestibulum nisi
+								fringilla lacinia. Nullam pulvinar sollicitudin velit id
+								laoreet. Quisque non rhoncus sem.</p>
+
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /container -->
+		</div>
+	</section>
+
+
+	<div class="scroll-top">
+
+		<div class="scrollup">
+			<i class="fa fa-angle-double-up"></i>
+		</div>
+
+	</div>
+
+
+	<!--Footer-->
+	<footer id="footer" class="footer colorsbg">
+		<div class="container">
+			<div class="row">
+
+				<div class="col-md-6 col-sm-6 col-xs-12">
+					<div class="copyright text-left">
+						<p>
+							Made with <i class="fa fa-heart"></i> by <a
+								href="http://bootstrapthemes.co"> Bootstrap Themes </a>2018. All
+							rights reserved.
+						</p>
+					</div>
+				</div>
+
+				<div class="col-md-6 col-sm-6 col-xs-12">
+					<div class="copyright text-right">
+						<p>Terms of Service | Privacy Policy</p>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</footer>
+
+</body>
+</html>
